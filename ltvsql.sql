@@ -8,9 +8,9 @@ subs AS (
 SELECT 
   *,
   CASE WHEN joinmonth = c.month THEN 1 ELSE 0 END new_subs,
-  DATE_TRUNC(date(Join_Date), month) AS joinmonth,
-FROM `eb-project-392023.sandbox.netflix` n
-LEFT JOIN `eb-project-392023.sandbox.calendar` c ON c.month BETWEEN joinmonth AND cancelmonth),
+  joinmonth,
+FROM `eb-project.sandbox.netflix` n
+LEFT JOIN `eb-project.sandbox.calendar` c ON c.month BETWEEN joinmonth AND cancelmonth),
 
 # Average revenue per subscription by month cte
 arps AS (
@@ -29,8 +29,8 @@ churn AS (
 SELECT 
   cancelmonth AS churnmonth,
   COALESCE(COUNT(DISTINCT User_ID),0) AS churns,
-FROM `eb-project-392023.sandbox.netflix` n
-LEFT JOIN `eb-project-392023.sandbox.calendar` c ON c.month = cancelmonth
+FROM `eb-project.sandbox.netflix` n
+LEFT JOIN `eb-project.sandbox.calendar` c ON c.month = cancelmonth
 GROUP BY cancelmonth),
 
 # join the arps and churn data into single query and calculate a churn rate
